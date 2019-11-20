@@ -1,17 +1,25 @@
 import dotenv from 'dotenv';
-import {getArticles} from './oldGhost';
+import {getOldGhostArticles, getOldGhostAuthors} from './oldGhost';
 import fs from 'fs';
 import path from 'path';
 dotenv.config();
 
 const start = async () => {
   try {
-    const data = await getArticles();
-    console.log('[OLD GHOST] GET %d Articles', data.data.posts.length);
+    const authors = await getOldGhostAuthors();
+    console.log('[OLD GHOST] GET %d authors', authors.data.users.length);
+    fs.writeFileSync(
+      path.join(__dirname, '../old_ghost_authors.json'),
+      JSON.stringify(authors.data)
+    );
+
+    const articles = await getOldGhostArticles();
+    console.log('[OLD GHOST] GET %d Articles', articles.data.posts.length);
     fs.writeFileSync(
       path.join(__dirname, '../old_ghost_articles.json'),
-      JSON.stringify(data.data)
+      JSON.stringify(articles.data)
     );
+
   } catch (error) {
     console.error('[SYSTEM] ERROR: ',error);
   }

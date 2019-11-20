@@ -9,11 +9,19 @@ let clientAuthString = `client_id=${process.env.OLD_GHOST_CLIENT_ID}&client_secr
 /**
 * Get Articles
 */
-const getArticles = () => {
+const getOldGhostArticles = () => {
   const defaultInclude = ['authors'];
   return ghost.get(`/posts?limit=all&formats=mobiledoc&include=${defaultInclude.join(',')}&${clientAuthString}`);
 };
 
+/**
+* Get Authors
+*/
+const getOldGhostAuthors = () => {
+  return ghost.get(`/users?limit=all&${clientAuthString}`);
+};
+
 module.exports = {
-  getArticles
+  getOldGhostArticles,
+  getOldGhostAuthors
 };

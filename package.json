@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "babel-node ./src/index.js",
-    "develop": "babel-node ./src/index.js",
+    "develop": "eslint ./src;babel-node ./src/index.js",
     "test-eslint": "eslint ./src"
   },
   "dependencies": {
