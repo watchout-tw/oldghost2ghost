@@ -9,9 +9,15 @@ let clientAuthString = `client_id=${process.env.OLD_GHOST_CLIENT_ID}&client_secr
 /**
 * Get Articles
 */
-const getOldGhostArticles = () => {
+const getOldGhostArticles = (slug = null) => {
   const defaultInclude = ['authors'];
-  return ghost.get(`/posts?limit=all&formats=mobiledoc&include=${defaultInclude.join(',')}&${clientAuthString}`);
+
+  if (!slug) {
+    return ghost.get(`/posts?limit=all&formats=mobiledoc&include=${defaultInclude.join(',')}&${clientAuthString}`);
+  } else {
+    return ghost.get(`/posts?limit=all&formats=mobiledoc&include=${defaultInclude.join(',')}&filter=authors:${slug}&${clientAuthString}`);
+  }
+  
 };
 
 /**
