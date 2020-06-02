@@ -46,12 +46,15 @@ const tune = [
   {
     old: 'musou',
     new: 'musou'
+  },
+  {
+    old: 'han',
+    new: 'hantsun'
   }
 ];
 
 const startMatchUser = async () => {
   try {
-
     const authors = await getOldGhostAuthors();
     console.log('[OLD GHOST] GET %d authors', authors.data.users.length);
     fs.writeFileSync(
@@ -72,6 +75,7 @@ const startMatchUser = async () => {
       let newID = null;
       let newSlug = null;
       let newName = null;
+      let newEmail = null;
 
       tune.forEach(t => {
         if (t.old === item.slug) {
@@ -82,6 +86,7 @@ const startMatchUser = async () => {
               newID = n.id;
               newSlug = n.slug;
               newName = n.name;
+              newEmail = n.email;
             }
           });
           
@@ -94,7 +99,8 @@ const startMatchUser = async () => {
         oldName: item.name,
         newID: newID,
         newSlug: newSlug,
-        newName: newName
+        newName: newName,
+        newEmail: newEmail
       };
     });
 
@@ -115,20 +121,15 @@ const readTunningAuthors =  () => {
   return (JSON.parse(rawdata));
 };
 
-const ghostRebirth =  (oldGhost) => {
+const ghostRebirth =  (oldGhost, authors) => {
   let newGhost = null;
-  const auth_tunning = readTunningAuthors();
-  auth_tunning.forEach( g => {
+  authors.forEach( g => {
     if (oldGhost === g.oldID) {
-      newGhost = g.newID;
+      newGhost = g;
     }
   });
   return newGhost;
 };
-
-
-
-startMatchUser();
 
 module.exports = {
   startMatchUser,

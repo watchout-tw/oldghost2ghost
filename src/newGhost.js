@@ -19,26 +19,33 @@ const api = new GhostAdminAPI({
 /**
   * add posts
   * @param {Object} post - post opject
-  * @param {Steing} author - new ghost author ID
+  * @param {Steing} authorID - new ghost author ID
+  * @param {Steing} authorEmail - new ghost author Email
   */
- const addGhostArticles = async (post, author) => {
-  const postRes = await api.posts.add({
-      title : post.title,
+ const addGhostArticles = async (post, authorID, authorEmail, action) => { 
+  console.log(`[TEST] action: ${action} | authorID : ${authorID}`);
+  if(action === 'test') {
+    if ( authorID  !== '1') return null;
+    console.log('[TEST] authorID:', authorID);
+  }
+  console.log('[ARTICLE] adding post : ', post.title);
+  return await api.posts.add({
+      id : post.id,
+      title : `${(action === 'test' ? '[TEST] ' : '')}${post.title}`,
       slug: post.slug,
       mobiledoc: post.mobiledoc,
       feature_image: post.feature_image,
       status: 'published',
-      created_at: author,
-      created_by: post.created_by,
-      updated_at: author,
-      updated_by: post.updated_by,
-      published_at: author,
-      published_by: post.published_by,
+      created_at: post.created_at,
+      created_by: authorID,
+      updated_at: post.updated_at,
+      updated_by: authorID,
+      published_at: post.published_at,
+      published_by: authorID,
       custom_excerpt: post.custom_excerpt,
-      author: author,
+      authors: [authorEmail],
       url: post.url
   });
-  return postRes;
 };
 
 /**
