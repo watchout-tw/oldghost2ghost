@@ -3,3 +3,4 @@ node_modules/
 .vscode
 output/
 yarn-error.log
+log/*.json

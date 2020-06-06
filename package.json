@@ -18,6 +18,7 @@
     "@tryghost/admin-api": "^1.0.0",
     "axios": "^0.19.0",
     "dotenv": "^8.2.0",
-    "eslint": "^6.6.0"
+    "eslint": "^6.6.0",
+    "firebase": "^7.15.0"
   }
 }
