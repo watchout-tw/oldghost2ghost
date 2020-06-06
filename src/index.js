@@ -3,13 +3,15 @@ import {getOldGhostArticles} from './oldGhost';
 import {addGhostArticles} from './newGhost';
 import {startMatchUser, readTunningAuthors, ghostRebirth} from './matchUsers';
 import {newLog, addLog} from './log';
+import updateFirebaseRefID from './updateFirebaseRefID';
+
 dotenv.config();
 
 const start = async (action) => {
   try {
     await startMatchUser();
     let authors = await readTunningAuthors();
-    const logFile = newLog();
+    const postLogFileName = newLog('article');
     for ( let author of authors) {
       const articles = await getOldGhostArticles(author.oldSlug);
       console.log(`[ARTICLE] old ghost <${author.oldSlug}>  - (${articles.data.posts.length})articles`);
@@ -24,10 +26,12 @@ const start = async (action) => {
             newID: addRes.id,
             title: addRes.title,
             author: newGhost.newEmail
-          }, logFile);
+          }, postLogFileName);
         }
       }
     }
+    console.log('[ARTICLE] all articles done !');
+    await updateFirebaseRefID(postLogFileName);
   } catch (error) {
     console.error('[SYSTEM] ERROR: ',error);
   }
